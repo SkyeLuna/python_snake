@@ -125,8 +125,8 @@ def main():
     # Main Loop
     while running:
         for event in pg.event.get():
-            # Player Movement
             if event.type == pg.KEYDOWN:
+                # Player Movement
                 if pg.key.get_pressed()[pg.K_s]:  # If S Key Is Pressed
                     player_x, player_y = player_move_down(screen, player, player_x, player_y)
                 if pg.key.get_pressed()[pg.K_d]:  # If D Key Is Pressed
@@ -135,8 +135,12 @@ def main():
                     player_x, player_y = player_move_up(screen, player, player_x, player_y)
                 if pg.key.get_pressed()[pg.K_a]:  # If A Key Is Pressed
                     player_x, player_y = player_move_left(screen, player, player_x, player_y)
+                # End Player Movement
+                # Player Simple Exit
+                if pg.key.get_pressed()[pg.K_ESCAPE]:
+                    running = False
+                # End Player Simple Exit
             if event.type == pg.QUIT:
-                # change the value to False, to exit the main loop
                 running = False
 
 
