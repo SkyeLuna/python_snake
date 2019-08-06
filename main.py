@@ -30,6 +30,14 @@ def player_move(screen, player, player_x, player_y, player_move_x, player_move_y
     return player_x, player_y
 
 
+def food(screen):
+    food_x = 150
+    food_y = 150
+    pg.draw.rect(screen, (255, 0, 0), pg.Rect(food_x, food_y, 50, 50))
+    update_screen()
+    return food_x, food_y
+
+
 def main():
     # Setting up game
     pg.init()
@@ -40,15 +48,12 @@ def main():
     player = pg.image.load("imgs/player.png")
     player = pg.transform.scale(player, (50, 50))
     running = True
-
-    # Set Background
+    eaten = False
     update_background(screen)
-    # Set Player Size
-    screen.blit(player, (50, 50))
-    # Set Player Start Location
-    player_x = 50
-    player_y = 50
-    # Update Screen For Start
+    screen.blit(player, (0, 0))
+    player_x = 0
+    player_y = 0
+    food_x, food_y = food(screen)
     update_screen()
 
     # Main Loop
@@ -69,6 +74,13 @@ def main():
                 if pg.key.get_pressed()[pg.K_ESCAPE]:
                     running = False
                 # End Player Simple Exit
+            # Checking if player touches food
+            if (food_x == player_x) and (food_y == player_y):
+                eaten = True
+            if not eaten:
+                food_x, food_y = food(screen)
+
+            # End Check
             if event.type == pg.QUIT:
                 running = False
 
