@@ -9,78 +9,7 @@ def update_background(screen):
     screen.fill((105, 105, 105))
 
 
-def player_move_right(screen, player, player_x, player_y):
-    player_move_x = 50
-    player_move_y = 0
-    # Check if player is on screen
-    if player_x > 500 - 50 or player_x < 0:
-        player_move_x = -player_move_x
-    if player_y > 500 - 50 or player_y < 0:
-        player_move_y = - player_move_y
-    # Move Player
-    player_x += player_move_x
-    player_y += player_move_y
-    # Remove Old Player Pos
-    update_background(screen)
-    # Update Screen
-    update_screen()
-    # Trigger Player Move
-    screen.blit(player, (player_x, player_y))
-    # Update Screen
-    update_screen()
-    # Return New Location
-    return player_x, player_y
-
-
-def player_move_left(screen, player, player_x, player_y):
-    player_move_x = -50
-    player_move_y = 0
-    # Check if player is on screen
-    if player_x > 500 - 50 or player_x < 0:
-        player_move_x = -player_move_x
-    if player_y > 500 - 50 or player_y < 0:
-        player_move_y = - player_move_y
-    # Move Player
-    player_x += player_move_x
-    player_y += player_move_y
-    # Remove Old Player Pos
-    update_background(screen)
-    # Update Screen
-    update_screen()
-    # Trigger Player Move
-    screen.blit(player, (player_x, player_y))
-    # Update Screen
-    update_screen()
-    # Return New Location
-    return player_x, player_y
-
-
-def player_move_down(screen, player, player_x, player_y):
-    player_move_x = 0
-    player_move_y = 50
-    # Check if player is on screen
-    if player_x > 500 - 50 or player_x < 0:
-        player_move_x = -player_move_x
-    if player_y > 500 - 50 or player_y < 0:
-        player_move_y = - player_move_y
-    # Move Player
-    player_x += player_move_x
-    player_y += player_move_y
-    # Remove Old Player Pos
-    update_background(screen)
-    # Update Screen
-    update_screen()
-    # Trigger Player Move
-    screen.blit(player, (player_x, player_y))
-    # Update Screen
-    update_screen()
-    # Return New Location
-    return player_x, player_y
-
-
-def player_move_up(screen, player, player_x, player_y):
-    player_move_x = 0
-    player_move_y = -50
+def player_move(screen, player, player_x, player_y, player_move_x, player_move_y):
     # Check if player is on screen
     if player_x > 500 - 50 or player_x < 0:
         player_move_x = -player_move_x
@@ -128,13 +57,13 @@ def main():
             if event.type == pg.KEYDOWN:
                 # Player Movement
                 if pg.key.get_pressed()[pg.K_s]:  # If S Key Is Pressed
-                    player_x, player_y = player_move_down(screen, player, player_x, player_y)
+                    player_x, player_y = player_move(screen, player, player_x, player_y, 0, 50)
                 if pg.key.get_pressed()[pg.K_d]:  # If D Key Is Pressed
-                    player_x, player_y = player_move_right(screen, player, player_x, player_y)
+                    player_x, player_y = player_move(screen, player, player_x, player_y, 50, 0)
                 if pg.key.get_pressed()[pg.K_w]:  # If W Key Is Pressed
-                    player_x, player_y = player_move_up(screen, player, player_x, player_y)
+                    player_x, player_y = player_move(screen, player, player_x, player_y, 0, -50)
                 if pg.key.get_pressed()[pg.K_a]:  # If A Key Is Pressed
-                    player_x, player_y = player_move_left(screen, player, player_x, player_y)
+                    player_x, player_y = player_move(screen, player, player_x, player_y, -50, 0)
                 # End Player Movement
                 # Player Simple Exit
                 if pg.key.get_pressed()[pg.K_ESCAPE]:
