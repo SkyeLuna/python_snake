@@ -58,7 +58,6 @@ def main():
     player = pg.image.load("imgs/player.png")
     player = pg.transform.scale(player, (50, 50))
     running = True
-    eaten = False
     update_background(screen)
     screen.blit(player, (0, 0))
     player_x = 0
