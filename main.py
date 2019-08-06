@@ -1,4 +1,9 @@
 import pygame as pg
+from random import randint
+import math
+
+def roundup(x):
+    return int(math.ceil(x / 50.0)) * 50
 
 
 def update_screen():
@@ -11,10 +16,14 @@ def update_background(screen):
 
 def player_move(screen, player, player_x, player_y, player_move_x, player_move_y):
     # Check if player is on screen
-    if player_x > 500 - 50 or player_x < 0:
-        player_move_x = -player_move_x
-    if player_y > 500 - 50 or player_y < 0:
-        player_move_y = - player_move_y
+    if (player_x == 0) and (player_move_x == -50):
+        return player_x, player_y
+    elif (player_y == 0) and (player_move_y == -50):
+        return player_x, player_y
+    elif (player_x == 450) and (player_move_x == 50):
+        return player_x, player_y
+    elif (player_y == 450) and (player_move_y == 50):
+        return player_x, player_y
     # Move Player
     player_x += player_move_x
     player_y += player_move_y
@@ -30,12 +39,9 @@ def player_move(screen, player, player_x, player_y, player_move_x, player_move_y
     return player_x, player_y
 
 
-def food(screen):
-    food_x = 150
-    food_y = 150
-    pg.draw.rect(screen, (255, 0, 0), pg.Rect(food_x, food_y, 50, 50))
+def food(foodpos, screen):
+    pg.draw.rect(screen, (255, 0, 0), pg.Rect(foodpos[0], foodpos[1], 50, 50))
     update_screen()
-    return food_x, food_y
 
 
 def main():
@@ -44,7 +50,11 @@ def main():
     logo = pg.image.load("imgs/icon.png")
     pg.display.set_icon(logo)
     pg.display.set_caption("Snake")
-    screen = pg.display.set_mode((500, 500))
+
+    screen_x = 500
+    screen_y = 500
+
+    screen = pg.display.set_mode((screen_x, screen_y))
     player = pg.image.load("imgs/player.png")
     player = pg.transform.scale(player, (50, 50))
     running = True
@@ -53,7 +63,8 @@ def main():
     screen.blit(player, (0, 0))
     player_x = 0
     player_y = 0
-    food_x, food_y = food(screen)
+    foodpos = [roundup(randint(0, screen_x-50)), roundup(randint(0, screen_y-50))]
+    food(foodpos, screen)
     update_screen()
 
     # Main Loop
@@ -74,11 +85,13 @@ def main():
                 if pg.key.get_pressed()[pg.K_ESCAPE]:
                     running = False
                 # End Player Simple Exit
+
             # Checking if player touches food
-            if (food_x == player_x) and (food_y == player_y):
-                eaten = True
-            if not eaten:
-                food_x, food_y = food(screen)
+            if (foodpos[0] == player_x) and (foodpos[1] == player_y):
+                foodpos = [roundup(randint(0, screen_x-50)), roundup(randint(0, screen_y-50))]
+                food(foodpos, screen)
+            else:
+                food(foodpos, screen)
 
             # End Check
             if event.type == pg.QUIT:
